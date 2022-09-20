@@ -72,8 +72,8 @@ extension LoginViewController {
     }
     
     private func layout() {
-        labelStack.addSubview(titleLabel)
-        labelStack.addSubview(subtitleLabel)
+        labelStack.addArrangedSubview(titleLabel)
+        labelStack.addArrangedSubview(subtitleLabel)
         view.addSubview(labelStack)
         view.addSubview(loginView)
         view.addSubview(loginButton)
