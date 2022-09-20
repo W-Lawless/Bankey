@@ -43,13 +43,15 @@ extension LoginViewController {
         labelStack.spacing = 8
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .systemFont(ofSize: 32)
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         titleLabel.textAlignment = .center
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.text = "Bankey"
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.font = .systemFont(ofSize: 16)
+        subtitleLabel.font = UIFont.preferredFont(forTextStyle: .title3)
         subtitleLabel.textAlignment = .center
+        subtitleLabel.numberOfLines = 0
         subtitleLabel.text = "Your premium mobile banking app!"
         
         loginView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +80,6 @@ extension LoginViewController {
         view.addSubview(errorMessageLabel)
         
         // Title Labels
-        
         NSLayoutConstraint.activate([
             labelStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             labelStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
