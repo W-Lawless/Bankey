@@ -34,6 +34,10 @@ class LoginViewController: UIViewController {
         layout()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        loginButton.configuration?.showsActivityIndicator = false
+    }
 
 }
 
@@ -152,8 +156,12 @@ extension LoginViewController {
 }
 
 
-// MARK: - Protocol Abstraction
+// MARK: - Protocol Abstractions
 
 protocol LoginViewControllerDelegate: AnyObject {
     func didLogin()
+}
+
+protocol LogoutDelegate: AnyObject {
+    func didLogout()
 }

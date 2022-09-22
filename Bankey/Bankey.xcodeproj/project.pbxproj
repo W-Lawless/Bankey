@@ -14,6 +14,7 @@
 		2B86B3AB28D90F9E0091DF49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B86B3AA28D90F9E0091DF49 /* Assets.xcassets */; };
 		2B86B3AE28D90F9E0091DF49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B86B3AC28D90F9E0091DF49 /* LaunchScreen.storyboard */; };
 		2B86B3B828D912850091DF49 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B86B3B728D912850091DF49 /* LoginView.swift */; };
+		2BC9FA7128DCFE25008F3E70 /* DummyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9FA7028DCFE25008F3E70 /* DummyVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		2B86B3AD28D90F9E0091DF49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B86B3AF28D90F9E0091DF49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B86B3B728D912850091DF49 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		2BC9FA7028DCFE25008F3E70 /* DummyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 			children = (
 				2B86B3A528D90F990091DF49 /* LoginViewController.swift */,
 				2B86B3B728D912850091DF49 /* LoginView.swift */,
+				2BC9FA7028DCFE25008F3E70 /* DummyVC.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B86B3B828D912850091DF49 /* LoginView.swift in Sources */,
+				2BC9FA7128DCFE25008F3E70 /* DummyVC.swift in Sources */,
 				2B86B3A628D90F990091DF49 /* LoginViewController.swift in Sources */,
 				2B86B3A228D90F990091DF49 /* AppDelegate.swift in Sources */,
 				2B2B190728DA365B00A7A6A6 /* OnBoardingContainerViewController.swift in Sources */,
