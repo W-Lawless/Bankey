@@ -9,6 +9,8 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    // MARK: - Props
+    
     let labelStack = UIStackView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
@@ -16,6 +18,8 @@ class LoginViewController: UIViewController {
     let loginButton = UIButton(type: .system)
     let errorMessageLabel = UILabel()
     
+    weak var delegate: LoginViewControllerDelegate? //weak reference to app delegate 
+
     var username: String? {
         return loginView.usernameTextField.text
     }
@@ -36,6 +40,7 @@ class LoginViewController: UIViewController {
 // MARK: - Style and Layout
 
 extension LoginViewController {
+    
     private func style() {
         
         labelStack.translatesAutoresizingMaskIntoConstraints = false
@@ -84,13 +89,12 @@ extension LoginViewController {
             labelStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             labelStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             labelStack.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: labelStack.trailingAnchor, multiplier: 1),
-            labelStack.heightAnchor.constraint(equalToConstant: 100)
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: labelStack.trailingAnchor, multiplier: 1)
         ])
         
         // Login View
         NSLayoutConstraint.activate([
-            loginView.topAnchor.constraint(equalToSystemSpacingBelow: labelStack.bottomAnchor, multiplier: 4),
+            loginView.topAnchor.constraint(equalToSystemSpacingBelow: labelStack.bottomAnchor, multiplier: 1),
             loginView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: loginView.trailingAnchor, multiplier: 1)
         ])
@@ -135,6 +139,7 @@ extension LoginViewController {
         
         if username == "Lawless" && password == "enter" {
             loginButton.configuration?.showsActivityIndicator = true
+            delegate?.didLogin()
         } else {
             configureView(withMessage: "Incorrect username / password")
         }
@@ -146,3 +151,9 @@ extension LoginViewController {
     }
 }
 
+
+// MARK: - Protocol Abstraction
+
+protocol LoginViewControllerDelegate: AnyObject {
+    func didLogin()
+}
