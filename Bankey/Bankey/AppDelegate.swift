@@ -7,6 +7,10 @@
 
 import UIKit
 
+// MARK: - Constants
+
+let appColor: UIColor = UIColor.systemTeal
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -16,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let loginViewController = LoginViewController()
     let onboardingContainerViewContoller = OnboardingContainerViewController()
     let dummyVC = DummyVC()
+    let mainVC = MainViewController()
     let defaults = UserDefaults.standard
     
     // MARK: - Initialization
@@ -30,8 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         onboardingContainerViewContoller.delegate = self
         dummyVC.logoutDelegate = self
         
-        window?.rootViewController = loginViewController
-//        window?.rootViewController = onboardingContainerViewContoller
+        window?.rootViewController = mainVC
+        
+        mainVC.selectedIndex = 0
         
         return true
     }

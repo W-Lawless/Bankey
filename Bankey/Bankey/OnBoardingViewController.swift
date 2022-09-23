@@ -11,22 +11,26 @@ import UIKit
 
 class OnboardingViewController: UIViewController {
     
+    // MARK: - Properties
+    
     let stackView = UIStackView()
     let imageView = UIImageView()
     let label = UILabel()
     var heroImageName: String
     var labelText: String
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        style()
-        layout()
-    }
+    
     
     init(heroImageName: String, titleText: String) {
         self.heroImageName = heroImageName
         self.labelText = titleText
         super.init(nibName: nil, bundle: nil)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        style()
+        layout()
     }
     
     required init?(coder: NSCoder) {
