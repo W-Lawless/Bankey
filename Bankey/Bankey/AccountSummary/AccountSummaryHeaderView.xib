@@ -17,15 +17,65 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="414" height="144"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bankey" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="whW-82-Ulr">
+                    <rect key="frame" x="16" y="15" width="79" height="30"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Good Morning" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcD-GZ-lVY">
+                    <rect key="frame" x="16" y="53" width="109" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today, Saturday Sept 24" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WXQ-4m-eK1">
+                    <rect key="frame" x="16" y="111" width="128" height="14"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sun.max.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="V8c-nt-Fhp">
+                    <rect key="frame" x="298" y="15.5" width="100" height="100.5"/>
+                    <color key="tintColor" systemColor="systemYellowColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="1xs-5W-zVS"/>
+                        <constraint firstAttribute="height" constant="100" id="m5X-qm-wzJ"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lawless" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gUL-Lv-AZy">
+                    <rect key="frame" x="16" y="82" width="61" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="whW-82-Ulr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="1qZ-XP-ifJ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="V8c-nt-Fhp" secondAttribute="trailing" constant="16" id="9X4-hV-4Fj"/>
+                <constraint firstItem="whW-82-Ulr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="Dfx-55-kcr"/>
+                <constraint firstItem="dcD-GZ-lVY" firstAttribute="top" secondItem="whW-82-Ulr" secondAttribute="bottom" constant="8" id="ElF-pU-9N0"/>
+                <constraint firstItem="gUL-Lv-AZy" firstAttribute="top" secondItem="dcD-GZ-lVY" secondAttribute="bottom" constant="8" id="OWh-Hq-Rri"/>
+                <constraint firstItem="dcD-GZ-lVY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="OoX-Q9-QN0"/>
+                <constraint firstItem="WXQ-4m-eK1" firstAttribute="top" secondItem="gUL-Lv-AZy" secondAttribute="bottom" constant="8" id="RJX-7O-wie"/>
+                <constraint firstItem="V8c-nt-Fhp" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="Uhl-Mf-Vdd"/>
+                <constraint firstItem="gUL-Lv-AZy" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="hGb-Ud-h1p"/>
+                <constraint firstItem="WXQ-4m-eK1" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="qzM-kV-VGh"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="132" y="78"/>
+            <point key="canvasLocation" x="131.8840579710145" y="77.678571428571431"/>
         </view>
     </objects>
     <resources>
+        <image name="sun.max.fill" catalog="system" width="128" height="124"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
