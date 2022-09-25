@@ -1,12 +1,5 @@
 //
-//  AccountSummaryHeader.swift
-//  Bankey
-//
-//  Created by W Lawless on 9/24/22.
-//
-
-//
-//  AccountSummaryVC.swift
+//  AccountSummaryHeaderView.swift
 //  Bankey
 //
 //  Created by W Lawless on 9/24/22.
@@ -16,8 +9,8 @@ import UIKit
 
 class AccountSummaryHeaderView: UIView {
     
-    
-    @IBOutlet var contentView: AccountSummaryHeaderView!
+
+    @IBOutlet var contentView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
