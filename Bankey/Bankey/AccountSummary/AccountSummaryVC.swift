@@ -30,8 +30,10 @@ class AccountSummaryVC: UIViewController {
 // MARK: - Layout
 
 extension AccountSummaryVC {
+    
     private func setup() {
         setupTableView()
+        setupTableHeaderView()
     }
     
     private func setupTableView() {
@@ -47,6 +49,16 @@ extension AccountSummaryVC {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    private func setupTableHeaderView(){
+        let header = AccountSummaryHeader(frame: .zero)
+        
+        var size = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        size.width = UIScreen.main.bounds.width
+        header.frame.size = size
+        
+        tableView.tableHeaderView = header
     }
 }
 
