@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let onboardingContainerViewContoller = OnboardingContainerViewController()
     let dummyVC = DummyVC()
     let mainVC = MainViewController()
+    let accountVC = AccountSummaryVC()
     let defaults = UserDefaults.standard
     
     // MARK: - Initialization
@@ -35,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         onboardingContainerViewContoller.delegate = self
         dummyVC.logoutDelegate = self
         
-        window?.rootViewController = mainVC
+        window?.rootViewController = accountVC //mainVC
         
         mainVC.selectedIndex = 0
         
