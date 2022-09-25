@@ -30,6 +30,7 @@ class AccountSummaryVC: UIViewController {
 // MARK: - Layout
 
 extension AccountSummaryVC {
+
     
     private func setup() {
         setupTableView()
@@ -52,7 +53,7 @@ extension AccountSummaryVC {
     }
     
     private func setupTableHeaderView(){
-        let header = AccountSummaryHeader(frame: .zero)
+        let header = AccountSummaryHeaderView(frame: .zero)
         
         var size = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         size.width = UIScreen.main.bounds.width
@@ -60,6 +61,7 @@ extension AccountSummaryVC {
         
         tableView.tableHeaderView = header
     }
+
 }
 
 //MARK: - Protocol-Delegate
