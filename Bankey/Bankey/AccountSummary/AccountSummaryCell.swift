@@ -9,6 +9,33 @@ import UIKit
 
 class AccountSummaryCell: UITableViewCell {
     
+    // MARK: - View Model
+    
+    enum AccountType: String {
+        case Banking
+        case CreditCard
+        case Investment
+    }
+    
+    struct ViewModel {
+        let accountType: AccountType
+        let accountName: String
+        let balance: Decimal
+        
+//        var balanceAsAttributedString: NSAttributedString {
+//            //return CurrencyFormatter().makeAttributedCurrency(balance)
+//            return makeFormattedBalance(dollars: "123", cents: "17")
+//        }
+        var balanceAsAttributedString: String {
+            return "abc"
+        }
+    }
+    
+    let viewModel: ViewModel? = nil
+    
+    
+    // MARK: - View Components
+    
     let typeLabel = UILabel()
     let dividerView = UIView()
     let nameLabel = UILabel()
@@ -18,7 +45,7 @@ class AccountSummaryCell: UITableViewCell {
     let chevron = UIImageView()
     
     static let reuseID = "AccountSummaryCell"
-    static let rowHeight: CGFloat = 100
+    static let rowHeight: CGFloat = 112
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,18 +59,21 @@ class AccountSummaryCell: UITableViewCell {
 }
 
 extension AccountSummaryCell {
+    
+    // MARK: - Set Up
+    
     private func setup() {
         typeLabel.translatesAutoresizingMaskIntoConstraints = false
         typeLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         typeLabel.adjustsFontForContentSizeCategory = true
-        typeLabel.text = "Account Type"
+        typeLabel.text = viewModel?.accountType.rawValue
         
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         dividerView.backgroundColor = appColor
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        nameLabel.text = "Account Name"
+        nameLabel.text = viewModel?.accountName
         
         balanceStackView.translatesAutoresizingMaskIntoConstraints = false
         balanceStackView.axis = .vertical
@@ -52,11 +82,10 @@ extension AccountSummaryCell {
         balanceNameLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceNameLabel.font = UIFont.preferredFont(forTextStyle: .body)
         balanceNameLabel.textAlignment = .right
-        balanceNameLabel.text = "Some Balance"
         
         balanceAmountLabel.translatesAutoresizingMaskIntoConstraints = false
         balanceAmountLabel.textAlignment = .right
-        balanceAmountLabel.text = "$1,000,000"
+        balanceAmountLabel.attributedText = makeFormattedBalance(dollars: "1,000,000", cents: "17")
         
         chevron.translatesAutoresizingMaskIntoConstraints = false
         let chevronImage = UIImage(systemName: "chevron.right")!.withTintColor(appColor, renderingMode: .alwaysOriginal)
@@ -73,6 +102,8 @@ extension AccountSummaryCell {
         contentView.addSubview(chevron)
         
     }
+    
+    // MARK: - Layout
     
     private func layout() {
         NSLayoutConstraint.activate([
@@ -96,3 +127,49 @@ extension AccountSummaryCell {
         ])
     }
 }
+
+
+// MARK: - Configure View Model
+
+extension AccountSummaryCell {
+    func configure(with vm: ViewModel) {
+        typeLabel.text = vm.accountType.rawValue
+        nameLabel.text = vm.accountName
+        
+//        balanceAmountLabel.attributedText = vm.balanceAsAttributedString
+        
+        switch vm.accountType {
+            case .Banking:
+                dividerView.backgroundColor = appColor
+                balanceNameLabel.text = "Current Balance"
+            case .CreditCard:
+                dividerView.backgroundColor = .systemOrange
+                balanceNameLabel.text = "Balance"
+            case .Investment:
+                dividerView.backgroundColor = .systemPurple
+                balanceNameLabel.text = "Value"
+        }
+    }
+}
+
+
+// MARK: - Format String
+
+extension AccountSummaryCell {
+    private func makeFormattedBalance(dollars: String, cents: String) -> NSMutableAttributedString {
+        let dollarSignAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .callout), .baselineOffset: 8]
+        let dollarAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .title1)]
+        let centAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote), .baselineOffset: 8]
+        
+        let rootString = NSMutableAttributedString(string: "$", attributes: dollarSignAttributes)
+        let dollarString = NSAttributedString(string: dollars, attributes: dollarAttributes)
+        let centString = NSAttributedString(string: cents, attributes: centAttributes)
+        
+        rootString.append(dollarString)
+        rootString.append(centString)
+        
+        return rootString
+    }
+}
+
+
