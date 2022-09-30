@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: LoginViewControllerDelegate {
     func didLogin() {
         if LocalState.hasOnboarded {
-            setRootViewController(accountVC)
+            setRootViewController(mainVC)
         } else {
             setRootViewController(onboardingContainerViewContoller)
         }
