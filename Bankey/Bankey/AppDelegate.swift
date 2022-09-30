@@ -19,8 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let loginViewController = LoginViewController()
     let onboardingContainerViewContoller = OnboardingContainerViewController()
-    let dummyVC = DummyVC()
+
     let mainVC = MainViewController()
+
     let accountVC = AccountSummaryVC()
     let defaults = UserDefaults.standard
     
@@ -34,12 +35,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         loginViewController.delegate = self
         onboardingContainerViewContoller.delegate = self
-        dummyVC.logoutDelegate = self
         
-        window?.rootViewController = accountVC //mainVC
         
         mainVC.selectedIndex = 0
+        mainVC.setStatusBar()
         
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().backgroundColor = appColor
+        
+        window?.rootViewController = mainVC
+            
         return true
     }
 
@@ -50,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: LoginViewControllerDelegate {
     func didLogin() {
         if LocalState.hasOnboarded {
-            setRootViewController(dummyVC)
+            setRootViewController(accountVC)
         } else {
             setRootViewController(onboardingContainerViewContoller)
         }
@@ -60,7 +65,7 @@ extension AppDelegate: LoginViewControllerDelegate {
 extension AppDelegate: OnboardingContainerViewControllerDelegate {
     func didFinishOnboarding() {
         LocalState.hasOnboarded = true
-        setRootViewController(dummyVC)
+        setRootViewController(mainVC)
     }
 }
 
