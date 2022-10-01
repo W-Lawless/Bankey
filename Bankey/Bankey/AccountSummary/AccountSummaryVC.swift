@@ -9,25 +9,24 @@ import UIKit
 
 class AccountSummaryVC: UIViewController {
     
-    // MARK: - Properties
-    
-    struct Profile {
-        let firstName: String
-        let lastName: String
-    }
+    // MARK: - Request Models
     
     var profile: Profile?
+    var accountData: [Account] = []
+    
+    // MARK: - View Models
+    
     var accounts: [AccountSummaryCell.ViewModel] = []
     
     var tableView = UITableView()
+    let header = AccountSummaryHeaderView(frame: .zero)
+
     
     lazy var logoutBarButton: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutTapped))
         barButtonItem.tintColor = .label
         return barButtonItem
     }()
-    
-    // MARK: - Mount Component
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +71,6 @@ extension AccountSummaryVC {
     }
     
     private func setupTableHeaderView(){
-        let header = AccountSummaryHeaderView(frame: .zero)
         
         var size = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         size.width = UIScreen.main.bounds.width
@@ -82,6 +80,50 @@ extension AccountSummaryVC {
     }
 
 }
+
+// MARK: - Networking
+
+extension AccountSummaryVC {
+    
+    private func fetchData() {
+        
+        fetchProfile(forUserId: "1") { result in
+            switch result {
+            case .success(let profile):
+                self.profile = profile
+                self.configureTableHeaderView(with: profile)
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+
+        fetchAccounts(forUserId: "1") { result in
+            switch result {
+            case .success(let accounts):
+                self.accountData = accounts
+                self.configureTableCells(with: accounts)
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func configureTableCells(with theData: [Account]) {
+        accounts = theData.map {
+            AccountSummaryCell.ViewModel(accountType: $0.type, accountName: $0.name, balance: $0.amount)
+        }
+    }
+    
+    private func configureTableHeaderView(with profile: Profile) {
+        let vm = AccountSummaryHeaderView.ViewModel(welcomeMessage: "Good morning,",
+                                                    name: profile.firstName,
+                                                    date: Date())
+        header.configure(vm: vm)
+    }
+}
+
 
 //MARK: - Protocol-Delegate
 
@@ -113,38 +155,5 @@ extension AccountSummaryVC: UITableViewDelegate {
 extension AccountSummaryVC {
     @objc private func logoutTapped(sender: UIButton) {
         NotificationCenter.default.post(name: .Logout, object: nil)
-    }
-}
-
-
-// MARK: - Fetch Data
-
-extension AccountSummaryVC {
-    private func fetchData() {
-        let savings = AccountSummaryCell.ViewModel(accountType: .Banking,
-                                                            accountName: "Basic Savings",
-                                                        balance: 1929466.23)
-        let chequing = AccountSummaryCell.ViewModel(accountType: .Banking,
-                                                    accountName: "No-Fee All-In Chequing",
-                                                    balance: 17562.44)
-        let visa = AccountSummaryCell.ViewModel(accountType: .CreditCard,
-                                                       accountName: "Visa Avion Card",
-                                                       balance: 412.83)
-        let masterCard = AccountSummaryCell.ViewModel(accountType: .CreditCard,
-                                                       accountName: "Student Mastercard",
-                                                       balance: 50.83)
-        let investment1 = AccountSummaryCell.ViewModel(accountType: .Investment,
-                                                       accountName: "Tax-Free Saver",
-                                                       balance: 2000.00)
-        let investment2 = AccountSummaryCell.ViewModel(accountType: .Investment,
-                                                       accountName: "Growth Fund",
-                                                       balance: 15000.00)
-
-        accounts.append(savings)
-        accounts.append(chequing)
-        accounts.append(visa)
-        accounts.append(masterCard)
-        accounts.append(investment1)
-        accounts.append(investment2)
     }
 }
