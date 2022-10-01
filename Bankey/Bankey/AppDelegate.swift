@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Constants
 
-let appColor: UIColor = UIColor.systemTeal
+let appColor: UIColor = UIColor.systemIndigo
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
