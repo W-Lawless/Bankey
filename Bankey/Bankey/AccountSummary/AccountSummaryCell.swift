@@ -17,7 +17,6 @@ class AccountSummaryCell: UITableViewCell {
     
     // MARK: - View Model
     
-    
     struct ViewModel {
         let accountType: AccountType
         let accountName: String

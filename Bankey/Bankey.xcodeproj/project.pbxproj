@@ -10,6 +10,7 @@
 		2B204B7A28E3D3A900B9F91D /* AccountSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B204B7928E3D3A900B9F91D /* AccountSummaryCell.swift */; };
 		2B2A8EC428E8B10D00B44A19 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A8EC328E8B10D00B44A19 /* DateUtils.swift */; };
 		2B2A8EC628E8B1DF00B44A19 /* AccountNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A8EC528E8B1DF00B44A19 /* AccountNetworking.swift */; };
+		2B2A8EC828E8E0C300B44A19 /* SkeletonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2A8EC728E8E0C300B44A19 /* SkeletonCell.swift */; };
 		2B2B190728DA365B00A7A6A6 /* OnBoardingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2B190628DA365B00A7A6A6 /* OnBoardingContainerViewController.swift */; };
 		2B2B190928DA684400A7A6A6 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2B190828DA684400A7A6A6 /* OnBoardingViewController.swift */; };
 		2B369FAC28DFE64E007F38F7 /* AccountSummaryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B369FAB28DFE64E007F38F7 /* AccountSummaryVC.swift */; };
@@ -44,6 +45,7 @@
 		2B204B7928E3D3A900B9F91D /* AccountSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSummaryCell.swift; sourceTree = "<group>"; };
 		2B2A8EC328E8B10D00B44A19 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		2B2A8EC528E8B1DF00B44A19 /* AccountNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNetworking.swift; sourceTree = "<group>"; };
+		2B2A8EC728E8E0C300B44A19 /* SkeletonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCell.swift; sourceTree = "<group>"; };
 		2B2B190628DA365B00A7A6A6 /* OnBoardingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingContainerViewController.swift; sourceTree = "<group>"; };
 		2B2B190828DA684400A7A6A6 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		2B369FAB28DFE64E007F38F7 /* AccountSummaryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSummaryVC.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				2B204B7928E3D3A900B9F91D /* AccountSummaryCell.swift */,
+				2B2A8EC728E8E0C300B44A19 /* SkeletonCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				2B2A8EC628E8B1DF00B44A19 /* AccountNetworking.swift in Sources */,
 				2B86B3A628D90F990091DF49 /* LoginViewController.swift in Sources */,
 				2B79656828E682C6006348C7 /* DecimalUtil.swift in Sources */,
+				2B2A8EC828E8E0C300B44A19 /* SkeletonCell.swift in Sources */,
 				2BEE165F28E7DC12009F6CE3 /* BellButton.swift in Sources */,
 				2BAA2FA828DFF6F7001913BE /* AccountSummaryHeaderView.swift in Sources */,
 				2B86B3A228D90F990091DF49 /* AppDelegate.swift in Sources */,
