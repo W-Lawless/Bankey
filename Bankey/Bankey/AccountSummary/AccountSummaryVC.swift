@@ -21,11 +21,18 @@ class AccountSummaryVC: UIViewController {
     
     var tableView = UITableView()
     
+    lazy var logoutBarButton: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutTapped))
+        barButtonItem.tintColor = .label
+        return barButtonItem
+    }()
+    
     // MARK: - Mount Component
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupNav()
         fetchData()
     }
 }
@@ -33,6 +40,10 @@ class AccountSummaryVC: UIViewController {
 // MARK: - Layout
 
 extension AccountSummaryVC {
+    
+    private func setupNav() {
+        navigationItem.rightBarButtonItem = logoutBarButton
+    }
 
     private func setup() {
         setupTableView()
@@ -94,6 +105,14 @@ extension AccountSummaryVC: UITableViewDataSource {
 extension AccountSummaryVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+    }
+}
+
+// MARK: - Button Actions
+
+extension AccountSummaryVC {
+    @objc private func logoutTapped(sender: UIButton) {
+        NotificationCenter.default.post(name: .Logout, object: nil)
     }
 }
 

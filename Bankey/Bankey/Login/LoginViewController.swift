@@ -27,11 +27,23 @@ class LoginViewController: UIViewController {
     var password: String? {
         loginView.passwordTextField.text
     }
+    
+    // MARK: - Animation Props
+    
+    var leadingEdgeOnScreen: CGFloat = 16
+    var leadingEdgeOffScreen: CGFloat = -1000
+    
+    var titleLeadingAnchor: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         style()
         layout()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        animate()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -50,6 +62,7 @@ extension LoginViewController {
         labelStack.translatesAutoresizingMaskIntoConstraints = false
         labelStack.axis = .vertical
         labelStack.spacing = 8
+        labelStack.alpha = 0
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
@@ -91,14 +104,16 @@ extension LoginViewController {
         // Title Labels
         NSLayoutConstraint.activate([
             labelStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            labelStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            labelStack.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: labelStack.trailingAnchor, multiplier: 1)
         ])
         
+        titleLeadingAnchor = labelStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingEdgeOffScreen)
+        titleLeadingAnchor?.isActive = true
+        
+        
         // Login View
         NSLayoutConstraint.activate([
-            loginView.topAnchor.constraint(equalToSystemSpacingBelow: labelStack.bottomAnchor, multiplier: 1),
+            loginView.topAnchor.constraint(equalToSystemSpacingBelow: labelStack.bottomAnchor, multiplier: 4),
             loginView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: loginView.trailingAnchor, multiplier: 1)
         ])
@@ -152,6 +167,18 @@ extension LoginViewController {
     private func configureView(withMessage message: String) {
         errorMessageLabel.isHidden = false
         errorMessageLabel.text = message
+        shakeButton()
+    }
+    
+    private func shakeButton() {
+        let animation = CAKeyframeAnimation()
+        animation.keyPath = "position.x"
+        animation.values = [0, 10, -10, 10, 0]
+        animation.keyTimes = [0, 0.16, 0.5, 0.83, 1]
+        animation.duration = 0.4
+
+        animation.isAdditive = true
+        loginButton.layer.add(animation, forKey: "shake")
     }
 }
 
@@ -164,4 +191,22 @@ protocol LoginViewControllerDelegate: AnyObject {
 
 protocol LogoutDelegate: AnyObject {
     func didLogout()
+}
+
+// MARK: - Animations
+
+extension LoginViewController {
+    private func animate() {
+        let animator1 = UIViewPropertyAnimator(duration: 1.25, curve: .easeInOut) {
+            self.titleLeadingAnchor?.constant = self.leadingEdgeOnScreen
+            self.view.layoutIfNeeded()
+        }
+        animator1.startAnimation()
+        
+        let animator2 = UIViewPropertyAnimator(duration: 0.5, curve: .easeIn) {
+            self.labelStack.alpha = 1
+            self.view.layoutIfNeeded()
+        }
+        animator2.startAnimation(afterDelay: 0.75)
+    }
 }
