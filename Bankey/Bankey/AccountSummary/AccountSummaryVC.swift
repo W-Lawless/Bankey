@@ -27,6 +27,13 @@ class AccountSummaryVC: UIViewController {
     // MARK: - Properties
     
     var dataIsLoaded: Bool = false
+    var networkManager: NetworkManageable = NetworkManager()
+    
+    lazy var errorAlert: UIAlertController = {
+        let alert =  UIAlertController(title: "", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        return alert
+    }()
 
     
     lazy var logoutBarButton: UIBarButtonItem = {
@@ -112,43 +119,99 @@ extension AccountSummaryVC {
         
         let networkGroupCall = DispatchGroup()
         
-        let userID = String(Int.random(in: 1..<4))
+        let userId = String(Int.random(in: 1..<4))
         
-        networkGroupCall.enter()
-        fetchProfile(forUserId: userID) { result in
+        fetchProfile(group: networkGroupCall, userId: userId)
+        fetchAccounts(group: networkGroupCall, userId: userId)
+        
+        networkGroupCall.notify(queue: .main) {
+            self.reloadView()
+        }
+    }
+     
+    private func fetchProfile(group: DispatchGroup, userId: String){
+        group.enter()
+        networkManager.fetchProfile(forUserId: userId) { result in
             switch result {
             case .success(let profile):
                 self.profile = profile
             case .failure(let error):
-                print(error.localizedDescription)
+                self.displayError(error)
             }
-            networkGroupCall.leave()
+            group.leave()
         }
-
-        networkGroupCall.enter()
-        fetchAccounts(forUserId: userID) { result in
+    }
+    
+    private func fetchAccounts(group: DispatchGroup, userId: String){
+        group.enter()
+        networkManager.fetchAccounts(forUserId: userId) { result in
             switch result {
             case .success(let accounts):
                 self.accountData = accounts
             case .failure(let error):
-                print(error.localizedDescription)
+                self.displayError(error)
             }
-            networkGroupCall.leave()
-        }
-        
-        networkGroupCall.notify(queue: .main) {
-            self.tableView.refreshControl?.endRefreshing()
-            
-            guard let profile = self.profile else { return }
-            
-            self.dataIsLoaded = true
-            self.configureTableHeaderView(with: profile)
-            self.configureTableCells(with: self.accountData)
-            self.tableView.reloadData()
+            group.leave()
         }
     }
+
+    private func reloadView() {
+        self.tableView.refreshControl?.endRefreshing()
+        
+        guard let profile = self.profile else { return }
+        
+        self.dataIsLoaded = true
+        self.configureTableHeaderView(with: profile)
+        self.configureTableCells(with: self.accountData)
+        self.tableView.reloadData()
+    }
     
+    private func displayError(_ error: NetworkError) {
+        let titleAndMessage = configureAlert(for: error)
+        self.showErrorAlert(title: titleAndMessage.0, message: titleAndMessage.1)
+    }
     
+    private func configureAlert(for error: NetworkError) -> (String, String) {
+        let title: String
+        let message: String
+        switch error {
+        case .serverError:
+            title = "Server Error"
+            message = "We could not proccess your request."
+        case .decodingError:
+            title = "Network Error"
+            message = "Check your connection."
+        }
+        return (title, message)
+    }
+
+    private func showErrorAlert(title: String, message: String) {
+        errorAlert.title = title
+        errorAlert.message = message
+        
+        present(errorAlert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Expose Network to Testing
+
+extension AccountSummaryVC {
+    func configureAlertForTesting(for error: NetworkError) -> (String, String) {
+        return configureAlert(for: error)
+    }
+    
+    func forceFetchProfile() {
+        fetchProfile(group: DispatchGroup(), userId: "1")
+    }
+    
+    func forceFetchAccount() {
+        fetchAccounts(group: DispatchGroup(), userId: "1")
+    }
+}
+
+// MARK: - Configure Table
+
+extension AccountSummaryVC {
     private func configureTableCells(with theData: [Account]) {
         accounts = theData.map {
             AccountSummaryCell.ViewModel(accountType: $0.type, accountName: $0.name, balance: $0.amount)

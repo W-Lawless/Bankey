@@ -37,7 +37,7 @@ struct Profile: Codable {
     }
 }
 
-extension AccountSummaryVC {
+class NetworkManager: NetworkManageable {
     
     func fetchProfile(forUserId userId: String, completion: @escaping (Result<Profile,NetworkError>) -> Void) {
         let url = URL(string: "https://fierce-retreat-36855.herokuapp.com/bankey/profile/\(userId)")!
@@ -48,7 +48,7 @@ extension AccountSummaryVC {
                     completion(.failure(.serverError))
                     return
                 }
-                
+
                 do {
                     let profile = try JSONDecoder().decode(Profile.self, from: data)
                     completion(.success(profile))
@@ -58,6 +58,7 @@ extension AccountSummaryVC {
             }
         }.resume()
     }
+    
     
     func fetchAccounts(forUserId userId: String, completion: @escaping (Result<[Account],NetworkError>) -> Void) {
             let url = URL(string: "https://fierce-retreat-36855.herokuapp.com/bankey/profile/\(userId)/accounts")!
@@ -81,4 +82,11 @@ extension AccountSummaryVC {
                 }
             }.resume()
         }
+}
+
+// MARK: - Unit Testing
+
+protocol NetworkManageable: AnyObject {
+    func fetchProfile(forUserId userId: String, completion: @escaping (Result<Profile,NetworkError>) -> Void)
+    func fetchAccounts(forUserId userId: String, completion: @escaping (Result<[Account], NetworkError>) -> Void)
 }

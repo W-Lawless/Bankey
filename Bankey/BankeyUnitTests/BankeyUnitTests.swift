@@ -43,13 +43,13 @@ class CurrencyTest: XCTestCase {
     }
 }
 
-class ProfileTests: XCTestCase {
+class ParseTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
     }
     
-    func testCanParse() throws {
+    func testCanParseProfile() throws {
         let json = """
         {
         "id": "1",
@@ -65,16 +65,8 @@ class ProfileTests: XCTestCase {
         XCTAssertEqual(result.firstName, "Kevin")
         XCTAssertEqual(result.lastName, "Flynn")
     }
-}
-
-
-class AccountTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-    }
-    
-    func testCanParse() throws {
+    func testCanParseAccount() throws {
         let json = """
          [
            {
@@ -110,3 +102,71 @@ class AccountTests: XCTestCase {
         XCTAssertEqual(account1.createdDateTime.monthDayYearString, "Jun 21, 2010")
     }
 }
+
+
+class AccountSummaryViewControllerTests: XCTestCase {
+    var vc: AccountSummaryVC!
+    var mockManager: MockNetworkManager!
+    
+    class MockNetworkManager: NetworkManageable {
+        var profile: Profile?
+        var account: Account?
+        var error: NetworkError?
+        
+        func fetchProfile(forUserId userId: String, completion: @escaping (Result<Profile, NetworkError>) -> Void) {
+            if error != nil {
+                completion(.failure(error!))
+                return
+            }
+            profile = Profile(id: "1", firstName: "FirstName", lastName: "LastName")
+            completion(.success(profile!))
+        }
+        
+        func fetchAccounts(forUserId userId: String, completion: @escaping (Result<[Account], NetworkError>) -> Void) {
+            if error != nil {
+                completion(.failure(error!))
+                return
+            }
+            account = Account(id: "1", type: .Banking, name: "Checking", amount: 100.17, createdDateTime: Date())
+            completion(.success([account!]))
+        }
+    }
+    
+    override func setUp() {
+        super.setUp()
+        vc = AccountSummaryVC()
+        mockManager = MockNetworkManager()
+        vc.networkManager = mockManager
+        // vc.loadViewIfNeeded()
+    }
+    
+    func testTitleAndMessageForServerError() throws {
+        let titleAndMessage = vc.configureAlertForTesting(for: .serverError)
+        XCTAssertEqual("Server Error", titleAndMessage.0)
+        XCTAssertEqual("We could not proccess your request.", titleAndMessage.1)
+    }
+    
+    func testTitleAndMessageForNetworkError() throws {
+        let titleAndMessage = vc.configureAlertForTesting(for: .decodingError)
+        XCTAssertEqual("Network Error", titleAndMessage.0)
+        XCTAssertEqual("Check your connection.", titleAndMessage.1)
+    }
+    
+    func testAlertForSeverError() throws {
+        mockManager.error = .serverError
+        vc.forceFetchProfile()
+        
+        XCTAssertEqual(vc.errorAlert.title, "Server Error")
+        XCTAssertEqual(vc.errorAlert.message, "We could not proccess your request.")
+    }
+    
+    func testAlertForDecodingError() throws {
+        mockManager.error = .decodingError
+        vc.forceFetchProfile()
+        
+        XCTAssertEqual(vc.errorAlert.title, "Network Error")
+        XCTAssertEqual(vc.errorAlert.message, "Check your connection.")
+    }
+
+}
+
