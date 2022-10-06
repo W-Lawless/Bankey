@@ -13,17 +13,33 @@ protocol PasswordTextFieldDelegate: AnyObject {
 }
 
 class PasswordView: UIView, UITextFieldDelegate {
+    
+    // MARK: - Properties
 
+    typealias CustomValidation = (_ textValue: String?) -> (Bool, String)?
+    
+    var placeholderText: String
+    var customValidation: CustomValidation?
+    
+    var text: String? {
+        get { return passwordField.text }
+        set { passwordField.text = newValue }
+    }
+    
+    weak var delegate: PasswordTextFieldDelegate?
+
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 200, height: 50)
+    }
+    
     // MARK: - Components
     
     let passwordField = UITextField()
-    var placeholderText: String
     let dividerView = UIView()
     let passwordLabel = UILabel()
     let lockIcon = UIImageView()
     let eyeButton = UIButton()
     
-    weak var delegate: PasswordTextFieldDelegate?
     
     init(placeholderText: String) {
         self.placeholderText = placeholderText
@@ -36,9 +52,6 @@ class PasswordView: UIView, UITextFieldDelegate {
         fatalError("init(coder:) is flipping a bitch")
     }
     
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: 200, height: 50)
-    }
 
 }
 
@@ -125,6 +138,31 @@ extension PasswordView {
 
     @objc func textFieldEditingChanged(_ sender: UITextField) {
         delegate?.editingChanged(self)
+    }
+}
+
+// MARK: - Validation
+
+extension PasswordView {
+    func validate() -> Bool {
+        if let customValidation = customValidation,
+            let customValidationResult = customValidation(text),
+            customValidationResult.0 == false {
+            showError(customValidationResult.1)
+            return false
+        }
+        clearError()
+        return true
+    }
+    
+    private func showError(_ errorMessage: String) {
+        passwordLabel.isHidden = false
+        passwordLabel.text = errorMessage
+    }
+
+    private func clearError() {
+        passwordLabel.isHidden = true
+        passwordLabel.text = ""
     }
 }
 

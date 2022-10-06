@@ -12,8 +12,11 @@ class ValidationView: UIView {
     
     //MARK: - Properties
     
+    var shouldResetCriteria: Bool = true
+    
+    // MARK: - Components
+    
     let stackView = UIStackView()
-
     let characterCountLabel = labelWithImage(labelText: "8-32 characters.")
     let toolTip = UILabel()
     let uppercaseCriteriaLabel = labelWithImage(labelText: "At least 1 uppercase character.")
@@ -21,7 +24,6 @@ class ValidationView: UIView {
     let digitCriteriaLabel = labelWithImage(labelText: "At least 1 digit.")
     let specialCharCriteriaLabel = labelWithImage(labelText: "At least 1 special character (@!#$)")
     
-    private var shouldResetCriteria: Bool = true
     
     // MARK: - Initialization
     
@@ -42,7 +44,7 @@ class ValidationView: UIView {
     
 }
 
-//: MARK: - Extensions
+//: MARK: - Auto Layout
 
 extension ValidationView {
     
@@ -77,7 +79,6 @@ extension ValidationView {
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 1),
 
-//            toolTip.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 2),
             trailingAnchor.constraint(equalToSystemSpacingAfter: toolTip.trailingAnchor, multiplier: 1),
             heightAnchor.constraint(equalToConstant: 260)
         ])
@@ -100,6 +101,7 @@ extension ValidationView {
     }
 }
 
+// MARK: - Component Class
 
 class labelWithImage: UIView {
     
@@ -168,7 +170,6 @@ class labelWithImage: UIView {
     }
 }
 
-
 // MARK: - Actions
 
 extension ValidationView {
@@ -199,6 +200,36 @@ extension ValidationView {
             specialCharMet
             ? specialCharCriteriaLabel.isCriteriaMet = true
             : specialCharCriteriaLabel.reset()
+        } else {
+            characterCountLabel.isCriteriaMet = lengthAndNoWhitespaceMet
+            uppercaseCriteriaLabel.isCriteriaMet = upperCaseMet
+            lowercaseCriteriaLabel.isCriteriaMet = lowerCaseMet
+            digitCriteriaLabel.isCriteriaMet = digitMet
+            specialCharCriteriaLabel.isCriteriaMet = specialCharMet
         }
+    }
+    
+    func validate(_ text: String) -> Bool {
+        let lengthAndNoWhitespaceMet = PasswordCriteria.lengthAndNoWhitespaceMet(text)
+        let upperCaseMet = PasswordCriteria.upperCaseMet(text)
+        let lowerCaseMet = PasswordCriteria.lowerCaseMet(text)
+        let digitMet = PasswordCriteria.digitMet(text)
+        let specialCharMet = PasswordCriteria.specialCharsMet(text)
+        
+        let checkable = [lengthAndNoWhitespaceMet, upperCaseMet, lowerCaseMet, digitMet, specialCharMet]
+        let metCriteria = checkable.filter { $0 }
+        
+        if metCriteria.count >= 4 {
+            return true
+        }
+        return false
+    }
+    
+    func reset() {
+        characterCountLabel.reset()
+        uppercaseCriteriaLabel.reset()
+        lowercaseCriteriaLabel.reset()
+        digitCriteriaLabel.reset()
+        specialCharCriteriaLabel.reset()
     }
 }

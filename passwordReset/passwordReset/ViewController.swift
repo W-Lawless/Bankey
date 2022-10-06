@@ -9,6 +9,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: - Properties
+    
+    typealias CustomValidation = (_ textValue: String?) -> (Bool, String)?
+    
     // MARK: - Components
     
     let containerStack = UIStackView()
@@ -20,14 +24,55 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupNewPassword()
+        setupConfirmPassword()
         layout()
     }
 
 }
 
-// MARK: - Validation Callbacks
+//MARK: - Setup
 
-
+extension ViewController {
+    private func setupNewPassword() {
+        let newPasswordValidation: CustomValidation = { text in
+            
+            // Empty text
+            guard let text = text, !text.isEmpty else {
+                self.criteriaView.reset()
+                return (false, "Enter your password")
+            }
+            
+            //Criteria Met
+            self.criteriaView.updateDisplay(text)
+            if !self.criteriaView.validate(text) {
+                return (false, "Your password must meet the requirements")
+            }
+            return (true, "")
+        }
+        
+        passwordComponent.customValidation = newPasswordValidation
+        passwordComponent.delegate = self
+    }
+    
+    private func setupConfirmPassword() {
+        let confirmPasswordValidation: CustomValidation = { text in
+            guard let text = text, !text.isEmpty else {
+                return (false, "Enter your password")
+            }
+            
+            guard text == self.passwordComponent.text else {
+                return (false, "Passwords do not match.")
+            }
+            
+            return (true , "")
+        }
+        
+        confirmPasswordComponent.customValidation = confirmPasswordValidation
+        confirmPasswordComponent.delegate = self
+    }
+    
+}
 
 // MARK: - AutoLayout
 
@@ -42,9 +87,7 @@ extension ViewController {
         
         containerStack.axis = .vertical
         containerStack.spacing = 8
-        
-        passwordComponent.delegate = self
-        
+                
         resetButton.configuration = .filled()
         resetButton.setTitle("Reset Password", for: [])
         resetButton.addTarget(self, action: #selector(resetBtn), for: .primaryActionTriggered)
@@ -90,7 +133,13 @@ extension ViewController: PasswordTextFieldDelegate {
         }
     }
     func editingDidEnd(_ sender: PasswordView) {
-        
+        if sender === passwordComponent {
+            criteriaView.shouldResetCriteria = false
+            _ = passwordComponent.validate()
+        } else if sender === confirmPasswordComponent {
+            print("Lost focus in confirm view")
+            _ = confirmPasswordComponent.validate()
+        }
     }
 }
 
