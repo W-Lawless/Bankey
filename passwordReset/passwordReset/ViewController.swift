@@ -120,7 +120,7 @@ extension ViewController {
 // MARK: - Actions
 
 extension ViewController {
-    @objc private func resetBtn(sender: UIButton) {
+    @objc func resetBtn(sender: UIButton) {
         view.endEditing(true)
         
         let isValidNewPassword = passwordComponent.validate()
@@ -248,5 +248,18 @@ extension UIResponder {
 
     @objc private func _trap() {
         Static.responder = self
+    }
+}
+
+// MARK: - Test Helper Methods
+extension ViewController {
+    var newPasswordText: String? {
+        get { return passwordComponent.text }
+        set { passwordComponent.text = newValue}
+    }
+    
+    var confirmPasswordText: String? {
+        get { return confirmPasswordComponent.text }
+        set { confirmPasswordComponent.text = newValue}
     }
 }

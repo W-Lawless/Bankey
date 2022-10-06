@@ -101,6 +101,70 @@ extension ValidationView {
     }
 }
 
+// MARK: - Actions
+
+extension ValidationView {
+    func updateDisplay(_ text: String) {
+        let lengthAndNoWhitespaceMet = PasswordCriteria.lengthAndNoWhitespaceMet(text)
+        let upperCaseMet = PasswordCriteria.upperCaseMet(text)
+        let lowerCaseMet = PasswordCriteria.lowerCaseMet(text)
+        let digitMet = PasswordCriteria.digitMet(text)
+        let specialCharMet = PasswordCriteria.specialCharsMet(text)
+        
+        if shouldResetCriteria {
+            lengthAndNoWhitespaceMet
+            ? characterCountLabel.isCriteriaMet = true
+            : characterCountLabel.reset()
+            
+            upperCaseMet
+            ? uppercaseCriteriaLabel.isCriteriaMet = true
+            : uppercaseCriteriaLabel.reset()
+            
+            lowerCaseMet
+            ? lowercaseCriteriaLabel.isCriteriaMet = true
+            : lowercaseCriteriaLabel.reset()
+            
+            digitMet
+            ? digitCriteriaLabel.isCriteriaMet = true
+            : digitCriteriaLabel.reset()
+            
+            specialCharMet
+            ? specialCharCriteriaLabel.isCriteriaMet = true
+            : specialCharCriteriaLabel.reset()
+        } else {
+            characterCountLabel.isCriteriaMet = lengthAndNoWhitespaceMet
+            uppercaseCriteriaLabel.isCriteriaMet = upperCaseMet
+            lowercaseCriteriaLabel.isCriteriaMet = lowerCaseMet
+            digitCriteriaLabel.isCriteriaMet = digitMet
+            specialCharCriteriaLabel.isCriteriaMet = specialCharMet
+        }
+    }
+    
+    func validate(_ text: String) -> Bool {
+        let lengthAndNoWhitespaceMet = PasswordCriteria.lengthAndNoWhitespaceMet(text)
+        let upperCaseMet = PasswordCriteria.upperCaseMet(text)
+        let lowerCaseMet = PasswordCriteria.lowerCaseMet(text)
+        let digitMet = PasswordCriteria.digitMet(text)
+        let specialCharMet = PasswordCriteria.specialCharsMet(text)
+        
+        let checkable = [lengthAndNoWhitespaceMet, upperCaseMet, lowerCaseMet, digitMet, specialCharMet]
+        let metCriteria = checkable.filter { $0 }
+        
+        if metCriteria.count >= 4 {
+            return true
+        }
+        return false
+    }
+    
+    func reset() {
+        characterCountLabel.reset()
+        uppercaseCriteriaLabel.reset()
+        lowercaseCriteriaLabel.reset()
+        digitCriteriaLabel.reset()
+        specialCharCriteriaLabel.reset()
+    }
+}
+
 // MARK: - Component Class
 
 class labelWithImage: UIView {
@@ -170,66 +234,18 @@ class labelWithImage: UIView {
     }
 }
 
-// MARK: - Actions
+//MARK: - Test Helper Methods
 
-extension ValidationView {
-    func updateDisplay(_ text: String) {
-        let lengthAndNoWhitespaceMet = PasswordCriteria.lengthAndNoWhitespaceMet(text)
-        let upperCaseMet = PasswordCriteria.upperCaseMet(text)
-        let lowerCaseMet = PasswordCriteria.lowerCaseMet(text)
-        let digitMet = PasswordCriteria.digitMet(text)
-        let specialCharMet = PasswordCriteria.specialCharsMet(text)
-        
-        if shouldResetCriteria {
-            lengthAndNoWhitespaceMet
-            ? characterCountLabel.isCriteriaMet = true
-            : characterCountLabel.reset()
-            
-            upperCaseMet
-            ? uppercaseCriteriaLabel.isCriteriaMet = true
-            : uppercaseCriteriaLabel.reset()
-            
-            lowerCaseMet
-            ? lowercaseCriteriaLabel.isCriteriaMet = true
-            : lowercaseCriteriaLabel.reset()
-            
-            digitMet
-            ? digitCriteriaLabel.isCriteriaMet = true
-            : digitCriteriaLabel.reset()
-            
-            specialCharMet
-            ? specialCharCriteriaLabel.isCriteriaMet = true
-            : specialCharCriteriaLabel.reset()
-        } else {
-            characterCountLabel.isCriteriaMet = lengthAndNoWhitespaceMet
-            uppercaseCriteriaLabel.isCriteriaMet = upperCaseMet
-            lowercaseCriteriaLabel.isCriteriaMet = lowerCaseMet
-            digitCriteriaLabel.isCriteriaMet = digitMet
-            specialCharCriteriaLabel.isCriteriaMet = specialCharMet
-        }
+extension labelWithImage {
+    var isCheckMarkImage: Bool {
+        return icon.image == check
     }
-    
-    func validate(_ text: String) -> Bool {
-        let lengthAndNoWhitespaceMet = PasswordCriteria.lengthAndNoWhitespaceMet(text)
-        let upperCaseMet = PasswordCriteria.upperCaseMet(text)
-        let lowerCaseMet = PasswordCriteria.lowerCaseMet(text)
-        let digitMet = PasswordCriteria.digitMet(text)
-        let specialCharMet = PasswordCriteria.specialCharsMet(text)
-        
-        let checkable = [lengthAndNoWhitespaceMet, upperCaseMet, lowerCaseMet, digitMet, specialCharMet]
-        let metCriteria = checkable.filter { $0 }
-        
-        if metCriteria.count >= 4 {
-            return true
-        }
-        return false
+
+    var isXmarkImage: Bool {
+        return icon.image == xmark
     }
-    
-    func reset() {
-        characterCountLabel.reset()
-        uppercaseCriteriaLabel.reset()
-        lowercaseCriteriaLabel.reset()
-        digitCriteriaLabel.reset()
-        specialCharCriteriaLabel.reset()
+
+    var isResetImage: Bool {
+        return icon.image == circle
     }
 }
